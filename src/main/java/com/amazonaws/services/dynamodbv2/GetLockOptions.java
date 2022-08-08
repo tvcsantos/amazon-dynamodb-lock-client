@@ -26,7 +26,7 @@ public class GetLockOptions {
 
 
     public static class GetLockOptionsBuilder {
-        private String partitionKey;
+        private final String partitionKey;
         private Optional<String> sortKey;
         private boolean deleteLockOnRelease;
 
@@ -51,7 +51,7 @@ public class GetLockOptions {
         }
 
         @Override
-        public java.lang.String toString() {
+        public String toString() {
             return "GetLockOptions.GetLockOptionsBuilder(partitionKey=" + this.partitionKey + ", sortKey=" + this.sortKey + ", deleteLockOnRelease=" + this.deleteLockOnRelease + ")";
         }
     }

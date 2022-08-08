@@ -219,7 +219,7 @@ public abstract class InMemoryLockClientTester {
         return byteBufferToString(buffer, Charset.defaultCharset());
     }
     // https://stackoverflow.com/questions/1252468/java-converting-string-to-and-from-bytebuffer-and-associated-problems
-    private final String byteBufferToString(ByteBuffer buffer, Charset charset) {
+    private String byteBufferToString(ByteBuffer buffer, Charset charset) {
         return new String(getBytes(buffer), charset);
     }
 

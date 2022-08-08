@@ -212,7 +212,7 @@ public class LockItem implements Closeable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof LockItem)) {
+        if (!(other instanceof LockItem)) {
             return false;
         }
 

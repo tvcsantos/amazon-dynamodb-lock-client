@@ -47,7 +47,7 @@ public class LockItemTest {
         createLockItem(lockClient).hashCode();
     }
 
-    LockItem mockableLockItem = Mockito.spy(createLockItem(lockClient));
+    final LockItem mockableLockItem = Mockito.spy(createLockItem(lockClient));
     @Test
     public void equals_rightNull_returnFalse() {
         assertFalse(createLockItem(lockClient).equals(null));

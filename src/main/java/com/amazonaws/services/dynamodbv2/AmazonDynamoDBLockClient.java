@@ -246,7 +246,7 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
     protected static final String IS_RELEASED = "isReleased";
     protected static final String IS_RELEASED_VALUE = "1";
     protected static final AttributeValue IS_RELEASED_ATTRIBUTE_VALUE = AttributeValue.builder().s(IS_RELEASED_VALUE).build();
-    protected static volatile AtomicInteger lockClientId = new AtomicInteger(0);
+    protected static final AtomicInteger lockClientId = new AtomicInteger(0);
     protected static final Boolean IS_RELEASED_INDICATOR = true;
     /*
      * Used as a default buffer for how long extra to wait when querying DynamoDB for a lock in acquireLock (can be overriden by
@@ -442,9 +442,7 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
         final boolean replaceData = options.getReplaceData();
 
         final Optional<SessionMonitor> sessionMonitor = options.getSessionMonitor();
-        if (sessionMonitor.isPresent()) {
-            sessionMonitorArgsValidate(sessionMonitor.get().getSafeTimeMillis(), this.heartbeatPeriodInMilliseconds, this.leaseDurationInMilliseconds);
-        }
+        sessionMonitor.ifPresent(monitor -> sessionMonitorArgsValidate(monitor.getSafeTimeMillis(), this.heartbeatPeriodInMilliseconds, this.leaseDurationInMilliseconds));
         final long currentTimeMillis = LockClientUtils.INSTANCE.millisecondTime();
 
         /*
@@ -488,8 +486,7 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
                         newLockData = options.getData(); // If there is no existing data, we write the input data to the lock.
                     }
 
-                    final Map<String, AttributeValue> item = new HashMap<>();
-                    item.putAll(options.getAdditionalAttributes());
+                    final Map<String, AttributeValue> item = new HashMap<>(options.getAdditionalAttributes());
                     item.put(this.partitionKeyName, AttributeValue.builder().s(key).build());
                     item.put(OWNER_NAME, AttributeValue.builder().s(this.ownerName).build());
                     item.put(LEASE_DURATION, AttributeValue.builder().s(String.valueOf(this.leaseDurationInMilliseconds)).build());
@@ -600,9 +597,7 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
 
         if (updateExistingLockRecord) {
             item.remove(partitionKeyName);
-            if (sortKeyName.isPresent()) {
-                item.remove(sortKeyName.get());
-            }
+            sortKeyName.ifPresent(item::remove);
             final String updateExpression = getUpdateExpressionAndUpdateNameValueMaps(item, expressionAttributeNames, expressionAttributeValues);
 
             final UpdateItemRequest updateItemRequest = UpdateItemRequest.builder().tableName(tableName).key(getItemKeys(existingLock.get()))
@@ -656,9 +651,7 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
 
         if (updateExistingLockRecord) {
             item.remove(partitionKeyName);
-            if (sortKeyName.isPresent()) {
-                item.remove(sortKeyName.get());
-            }
+            sortKeyName.ifPresent(item::remove);
             final String updateExpression = getUpdateExpressionAndUpdateNameValueMaps(item, expressionAttributeNames, expressionAttributeValues)
                     + REMOVE_IS_RELEASED_UPDATE_EXPRESSION;
 
@@ -724,9 +717,7 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
         if (updateExistingLockRecord) {
             // Remove keys from item to create updateExpression
             item.remove(partitionKeyName);
-            if (sortKeyName.isPresent()) {
-                item.remove(sortKeyName.get());
-            }
+            sortKeyName.ifPresent(item::remove);
             final Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
             final String updateExpression = getUpdateExpressionAndUpdateNameValueMaps(item, expressionAttributeNames, expressionAttributeValues);
             final UpdateItemRequest updateItemRequest = UpdateItemRequest.builder().tableName(tableName).key(getKeys(key, sortKey))
@@ -921,9 +912,7 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
     private Map<String, AttributeValue> getKeys(String partitionKey, Optional<String> sortKey) {
         final Map<String, AttributeValue> key = new HashMap<>();
         key.put(this.partitionKeyName, AttributeValue.builder().s(partitionKey).build());
-        if (sortKey.isPresent()) {
-            key.put(this.sortKeyName.get(), AttributeValue.builder().s(sortKey.get()).build());
-        }
+        sortKey.ifPresent(s -> key.put(this.sortKeyName.get(), AttributeValue.builder().s(s).build()));
         return key;
     }
 
@@ -1018,15 +1007,13 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
          * call to DynamoDB succeeds
          */
         final long lookupTime = LockClientUtils.INSTANCE.millisecondTime();
-        final LockItem lockItem =
-            new LockItem(this,
-                options.getPartitionKey(),
-                options.getSortKey(), data,
-                options.isDeleteLockOnRelease(),
-                ownerName.s(),
-                Long.parseLong(leaseDuration.s()), lookupTime,
-                recordVersionNumber.s(), isReleased, Optional.empty(), item);
-        return lockItem;
+        return new LockItem(this,
+            options.getPartitionKey(),
+            options.getSortKey(), data,
+            options.isDeleteLockOnRelease(),
+            ownerName.s(),
+            Long.parseLong(leaseDuration.s()), lookupTime,
+            recordVersionNumber.s(), isReleased, Optional.empty(), item);
     }
 
     /**
@@ -1278,9 +1265,7 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
     private GetItemResponse readFromDynamoDB(final String key, final Optional<String> sortKey) {
         final Map<String, AttributeValue> dynamoDBKey = new HashMap<>();
         dynamoDBKey.put(this.partitionKeyName, AttributeValue.builder().s(key).build());
-        if (this.sortKeyName.isPresent()) {
-            dynamoDBKey.put(this.sortKeyName.get(), AttributeValue.builder().s(sortKey.get()).build());
-        }
+        this.sortKeyName.ifPresent(s -> dynamoDBKey.put(s, AttributeValue.builder().s(sortKey.get()).build()));
         final GetItemRequest getItemRequest = GetItemRequest.builder().tableName(tableName).key(dynamoDBKey)
                 .consistentRead(true)
                 .build();
@@ -1376,7 +1361,6 @@ public class AmazonDynamoDBLockClient implements Runnable, Closeable {
 
         options = this.sortKeyName.map(item::get).map(AttributeValue::s).map(options::withSortKey).orElse(options);
 
-        final LockItem lockItem = this.createLockItem(options.build(), item);
-        return lockItem;
+        return this.createLockItem(options.build(), item);
     }
 }

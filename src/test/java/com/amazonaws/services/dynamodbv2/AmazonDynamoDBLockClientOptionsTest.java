@@ -18,9 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -45,7 +43,7 @@ import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class AmazonDynamoDBLockClientOptionsTest {
-    DynamoDbClient dynamodb = Mockito.mock(DynamoDbClient.class);
+    final DynamoDbClient dynamodb = Mockito.mock(DynamoDbClient.class);
 
     @Test
     public void testBuilder_whenGetLocalHostThrowsUnknownHostException_uuidCreateRandomIsCalled() throws InterruptedException, IOException {

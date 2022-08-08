@@ -34,7 +34,7 @@ public class ReleaseLockOptionsTest {
     public void withLockItem_setsLockItem() {
         LockItem lockItem = LockItemTest.createLockItem(lockClient);
         ReleaseLockOptions.ReleaseLockOptionsBuilder builder = ReleaseLockOptions.builder(lockItem);
-        System.out.println(builder.toString());
+        System.out.println(builder);
         assertEquals(lockItem, builder.build().getLockItem());
     }
 }

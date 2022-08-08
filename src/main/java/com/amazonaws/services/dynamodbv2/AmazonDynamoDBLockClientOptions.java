@@ -57,8 +57,8 @@ public class AmazonDynamoDBLockClientOptions {
      * "key," a lease duration of 20 seconds, and a default heartbeat period of 5 seconds. These defaults can be overriden.
      */
     public static class AmazonDynamoDBLockClientOptionsBuilder {
-        private DynamoDbClient dynamoDBClient;
-        private String tableName;
+        private final DynamoDbClient dynamoDBClient;
+        private final String tableName;
         private String partitionKeyName;
         private Optional<String> sortKeyName;
         private String ownerName;
@@ -67,7 +67,7 @@ public class AmazonDynamoDBLockClientOptions {
         private TimeUnit timeUnit;
         private Boolean createHeartbeatBackgroundThread;
         private Boolean holdLockOnServiceUnavailable;
-        private Function<String, ThreadFactory> namedThreadCreator;
+        private final Function<String, ThreadFactory> namedThreadCreator;
 
         AmazonDynamoDBLockClientOptionsBuilder(final DynamoDbClient dynamoDBClient, final String tableName) {
             this(dynamoDBClient, tableName,
@@ -76,9 +76,9 @@ public class AmazonDynamoDBLockClientOptions {
                 namedThreadCreator());
         }
 
-        private static final String generateOwnerNameFromLocalhost() {
+        private static String generateOwnerNameFromLocalhost() {
             try {
-                return Inet4Address.getLocalHost().getHostName() + UUID.randomUUID().toString();
+                return Inet4Address.getLocalHost().getHostName() + UUID.randomUUID();
             } catch (final UnknownHostException e) {
                 return UUID.randomUUID().toString();
             }

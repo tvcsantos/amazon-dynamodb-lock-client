@@ -41,7 +41,7 @@ public class SendHeartbeatOptions {
     }
 
     public static class SendHeartbeatOptionsBuilder {
-        private LockItem lockItem;
+        private final LockItem lockItem;
         private Optional<ByteBuffer> data;
         private Boolean deleteData;
         private Long leaseDurationToEnsure;
@@ -94,7 +94,7 @@ public class SendHeartbeatOptions {
         }
 
         @Override
-        public java.lang.String toString() {
+        public String toString() {
             return "SendHeartbeatOptions.SendHeartbeatOptionsBuilder(lockItem=" + this.lockItem + ", data=" + this.data + ", deleteData=" + this.deleteData
                 + ", leaseDurationToEnsure=" + this.leaseDurationToEnsure + ", timeUnit=" + this.timeUnit + ")";
         }

@@ -18,7 +18,6 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,7 +52,7 @@ public class GetAllLocksTests extends InMemoryLockClientTester {
     private static final int DYNAMODB_MAX_ITEM_SIZE_IN_BYTES = 400 * (1 << 10);
 
     @Test
-    public void testGetAllLocksFromDynamoDBNoLocks() throws LockNotGrantedException, InterruptedException, IOException {
+    public void testGetAllLocksFromDynamoDBNoLocks() throws LockNotGrantedException {
         final boolean deleteOnRelease = false;
         final List<LockItem> allLocksFromDynamoDB = this.lockClient.getAllLocksFromDynamoDB(deleteOnRelease).collect(toList());
 
@@ -61,7 +60,7 @@ public class GetAllLocksTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testGetAllLocksFromDynamoDBSingleLock() throws LockNotGrantedException, InterruptedException, IOException {
+    public void testGetAllLocksFromDynamoDBSingleLock() throws LockNotGrantedException, InterruptedException {
         final AcquireLockOptions options = AcquireLockOptions.builder("Test 1").withData(ByteBuffer.wrap(TEST_DATA.getBytes())).withDeleteLockOnRelease(true).build();
 
         final LockItem singleLock = this.lockClient.acquireLock(options);
@@ -83,7 +82,7 @@ public class GetAllLocksTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testGetAllLocksFromDynamoDBMultipleLocks() throws LockNotGrantedException, InterruptedException, IOException {
+    public void testGetAllLocksFromDynamoDBMultipleLocks() throws LockNotGrantedException, InterruptedException {
         final AcquireLockOptions options1 = AcquireLockOptions.builder("Test 1").withData(ByteBuffer.wrap(TEST_DATA.getBytes())).withDeleteLockOnRelease(true).build();
         final LockItem firstLock = this.lockClient.acquireLock(options1);
 
@@ -125,7 +124,7 @@ public class GetAllLocksTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testGetAllLocksFromDynamoDBMultiplePagedResultSet() throws LockNotGrantedException, InterruptedException, IOException {
+    public void testGetAllLocksFromDynamoDBMultiplePagedResultSet() throws LockNotGrantedException, InterruptedException {
         // Scan is paginated.
         // Scans with items that are larger than 1MB are paginated
         // and must be retrieved by performing multiple scans.

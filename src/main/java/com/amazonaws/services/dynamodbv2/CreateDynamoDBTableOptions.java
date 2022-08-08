@@ -44,9 +44,9 @@ public class CreateDynamoDBTableOptions {
     }
 
     public static class CreateDynamoDBTableOptionsBuilder {
-        private DynamoDbClient dynamoDBClient;
-        private ProvisionedThroughput provisionedThroughput;
-        private String tableName;
+        private final DynamoDbClient dynamoDBClient;
+        private final ProvisionedThroughput provisionedThroughput;
+        private final String tableName;
         private String partitionKeyName;
         private Optional<String> sortKeyName;
 
@@ -81,7 +81,7 @@ public class CreateDynamoDBTableOptions {
         }
 
         @Override
-        public java.lang.String toString() {
+        public String toString() {
             return "CreateDynamoDBTableOptions.CreateDynamoDBTableOptionsBuilder(dynamoDBClient=" + this.dynamoDBClient + ", provisionedThroughput=" + this.provisionedThroughput
                 + ", tableName=" + this.tableName + ", partitionKeyName=" + this.partitionKeyName + ", sortKeyName=" + this.sortKeyName + ")";
         }

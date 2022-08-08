@@ -14,7 +14,6 @@
  */
 package com.amazonaws.services.dynamodbv2;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +42,7 @@ public class ConsistentLockDataStressTest extends InMemoryLockClientTester {
     private static final Log logger = LogFactory.getLog(ConsistentLockDataStressTest.class);
 
     @Test
-    public void consistentDataUsingUpdateLockRecord() throws InterruptedException, IOException, ExecutionException {
+    public void consistentDataUsingUpdateLockRecord() throws InterruptedException {
         final int numOfThreads = 50;
         final int maxWorkDoneMillis = 100;
         final int numRepetitions = 10;
@@ -90,7 +88,7 @@ public class ConsistentLockDataStressTest extends InMemoryLockClientTester {
     }
 
     @Test
-    public void notConsistentLockDataUsingUpdateLockRecord() throws InterruptedException, IOException, ExecutionException {
+    public void notConsistentLockDataUsingUpdateLockRecord() throws InterruptedException {
         final int numOfThreads = 50;
         final int maxWorkDoneMillis = 100;
         final int numRepetitions = 10;
@@ -136,7 +134,7 @@ public class ConsistentLockDataStressTest extends InMemoryLockClientTester {
     }
 
     @Test
-    public void consistentDataUsingPutLockRecord() throws InterruptedException, IOException, ExecutionException {
+    public void consistentDataUsingPutLockRecord() throws InterruptedException {
         final int numOfThreads = 50;
         final int maxWorkDoneMillis = 100;
         final int numRepetitions = 10;
@@ -182,7 +180,7 @@ public class ConsistentLockDataStressTest extends InMemoryLockClientTester {
     }
 
     @Test
-    public void notConsistentLockDataUsingPutLockRecord() throws InterruptedException, IOException, ExecutionException {
+    public void notConsistentLockDataUsingPutLockRecord() throws InterruptedException {
         final int numOfThreads = 50;
         final int maxWorkDoneMillis = 100;
         final int numRepetitions = 10;
@@ -262,7 +260,7 @@ public class ConsistentLockDataStressTest extends InMemoryLockClientTester {
             assertTrue(
                     message + " Timeout initializing threads! Perform long lasting initializations before passing runnables to " +
                             "assertConcurrent",
-                    allExecutorThreadsReady.await(runnables.size() * 10, TimeUnit.MILLISECONDS));
+                    allExecutorThreadsReady.await(runnables.size() * 10L, TimeUnit.MILLISECONDS));
             // start all test runners
             afterInitBlocker.countDown();
             assertTrue(message + " Timeout! More than" + maxTimeoutSeconds + "seconds", allDone.await(maxTimeoutSeconds, TimeUnit.SECONDS));

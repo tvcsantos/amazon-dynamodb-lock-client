@@ -149,7 +149,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
      * @throws InterruptedException if acquireLock was interrupted
      */
     @Test
-    public void testNoBackgroundThread() throws InterruptedException, IOException {
+    public void testNoBackgroundThread() throws InterruptedException {
         final LockItem item = shortLeaseLockClient.acquireLock(ACQUIRE_LOCK_OPTIONS_TEST_KEY_1);
         final LockItem item2 = shortLeaseLockClient.acquireLock(ACQUIRE_LOCK_OPTIONS_TEST_KEY_2);
         assertEquals(item.getPartitionKey(), "testKey1");
@@ -160,7 +160,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testNoBackgroundThreadWithSortKey() throws InterruptedException, IOException {
+    public void testNoBackgroundThreadWithSortKey() throws InterruptedException {
         final LockItem item = shortLeaseLockClientForRangeKeyTable.acquireLock(ACQUIRE_LOCK_OPTIONS_TEST_KEY_1_SORT_1);
         final LockItem item2 = shortLeaseLockClientForRangeKeyTable.acquireLock(ACQUIRE_LOCK_OPTIONS_TEST_KEY_1_SORT_2);
         assertEquals(item.getPartitionKey(), "testKey1");
@@ -173,7 +173,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testReleasingLock() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testReleasingLock() throws LockNotGrantedException, InterruptedException {
         final LockItem item = this.lockClientWithHeartbeating.acquireLock(ACQUIRE_LOCK_OPTIONS_TEST_KEY_1);
         assertEquals(item.getPartitionKey(), "testKey1");
 
@@ -183,7 +183,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testReleasingLockWithSortKey() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testReleasingLockWithSortKey() throws LockNotGrantedException, InterruptedException {
         final LockItem item = this.lockClientWithHeartbeatingForRangeKeyTable.acquireLock(ACQUIRE_LOCK_OPTIONS_TEST_KEY_1_SORT_1);
         assertEquals(item.getPartitionKey(), "testKey1");
         assertEquals(item.getSortKey(), Optional.of("1"));
@@ -193,7 +193,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveData() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveData() throws LockNotGrantedException, InterruptedException {
         final String data = "testAcquireLockLeaveData";
         LockItem item = this.lockClient.acquireLock(AcquireLockOptions.builder("testKey1")
                 .withData(ByteBuffer.wrap(data.getBytes()))
@@ -211,7 +211,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveData_rvnChanged() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveData_rvnChanged() throws LockNotGrantedException, InterruptedException {
         final String data = "testAcquireLockLeaveData";
         LockItem item = this.lockClient.acquireLock(AcquireLockOptions.builder("testKey1")
                 .withData(ByteBuffer.wrap(data.getBytes()))
@@ -237,7 +237,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataWithSortKey() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveDataWithSortKey() throws LockNotGrantedException, InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
         LockItem item = this.lockClientForRangeKeyTable.acquireLock(AcquireLockOptions.builder("testKey1").withSortKey("1").withData
@@ -256,7 +256,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataWithSortKey_rvnChanged() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveDataWithSortKey_rvnChanged() throws LockNotGrantedException, InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
         LockItem item = this.lockClientForRangeKeyTable.acquireLock(AcquireLockOptions.builder("testKey1").withSortKey("1").withData
@@ -283,7 +283,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataConsistentData() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveDataConsistentData() throws LockNotGrantedException, InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
         LockItem item = this.lockClient.acquireLock(AcquireLockOptions.builder("testKey1").withData(ByteBuffer.wrap(data.getBytes())).build());
@@ -301,7 +301,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
 
 
     @Test
-    public void testAcquireLockLeaveDataConsistentData_rvnChanged() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveDataConsistentData_rvnChanged() throws LockNotGrantedException, InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
         LockItem item = this.lockClient.acquireLock(AcquireLockOptions.builder("testKey1").withData(ByteBuffer.wrap(data.getBytes())).build());
@@ -324,7 +324,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataConsistentDataWithSortKey() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveDataConsistentDataWithSortKey() throws LockNotGrantedException, InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
         LockItem item = this.lockClientForRangeKeyTable.acquireLock(AcquireLockOptions.builder("testKey1").withSortKey("1")
@@ -344,7 +344,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataConsistentDataWithSortKey_rvnChanged() throws IOException, LockNotGrantedException,
+    public void testAcquireLockLeaveDataConsistentDataWithSortKey_rvnChanged() throws LockNotGrantedException,
             InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
@@ -371,7 +371,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
 
 
     @Test
-    public void testAcquireLockLeaveDataWhenUpdateExistingLockTrue() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveDataWhenUpdateExistingLockTrue() throws LockNotGrantedException, InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
         final String lockPartitionKey = "testKey1";
@@ -389,7 +389,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataWhenUpdateExistingLockTrue_rvnChanged() throws IOException, LockNotGrantedException,
+    public void testAcquireLockLeaveDataWhenUpdateExistingLockTrue_rvnChanged() throws LockNotGrantedException,
             InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
@@ -416,7 +416,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataWhenUpdateExistingLockTrueWithSortKey() throws IOException, LockNotGrantedException,
+    public void testAcquireLockLeaveDataWhenUpdateExistingLockTrueWithSortKey() throws LockNotGrantedException,
             InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
@@ -439,7 +439,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataWhenUpdateExistingLockTrueWithSortKey_rvnChanged() throws IOException, LockNotGrantedException,
+    public void testAcquireLockLeaveDataWhenUpdateExistingLockTrueWithSortKey_rvnChanged() throws LockNotGrantedException,
             InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
@@ -470,7 +470,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
 
 
     @Test
-    public void testAcquireLockLeaveDataConsistentDataWhenUpdateExistingLockTrue() throws IOException, LockNotGrantedException,
+    public void testAcquireLockLeaveDataConsistentDataWhenUpdateExistingLockTrue() throws LockNotGrantedException,
             InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
@@ -489,7 +489,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataConsistentDataWhenUpdateExistingLockTrue_rvnChanged() throws IOException, LockNotGrantedException,
+    public void testAcquireLockLeaveDataConsistentDataWhenUpdateExistingLockTrue_rvnChanged() throws LockNotGrantedException,
             InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
@@ -514,7 +514,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataConsistentDataWhenUpdateExistingLockTrueWithSortKey() throws IOException, LockNotGrantedException,
+    public void testAcquireLockLeaveDataConsistentDataWhenUpdateExistingLockTrueWithSortKey() throws LockNotGrantedException,
             InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
@@ -535,7 +535,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveDataConsistentDataWhenUpdateExistingLockTrueWithSortKey_rvnChanged() throws IOException,
+    public void testAcquireLockLeaveDataConsistentDataWhenUpdateExistingLockTrueWithSortKey_rvnChanged() throws
             LockNotGrantedException, InterruptedException {
 
         final String data = "testAcquireLockLeaveData";
@@ -562,7 +562,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockMustExistWhenNotUpdateExistingLock_LockDoesNotExist() throws IOException, LockNotGrantedException,
+    public void testAcquireLockMustExistWhenNotUpdateExistingLock_LockDoesNotExist() throws LockNotGrantedException,
             InterruptedException {
 
         try {
@@ -574,7 +574,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockMustExistWhenNotUpdateExistingLockConsistentData_LockDoesNotExist() throws IOException,
+    public void testAcquireLockMustExistWhenNotUpdateExistingLockConsistentData_LockDoesNotExist() throws
             LockNotGrantedException, InterruptedException {
 
         try {
@@ -586,7 +586,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockMustExistWhenNotUpdateExistingLockWithSortKey_LockDoesNotExist() throws IOException, LockNotGrantedException,
+    public void testAcquireLockMustExistWhenNotUpdateExistingLockWithSortKey_LockDoesNotExist() throws LockNotGrantedException,
             InterruptedException {
 
         try {
@@ -598,7 +598,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockMustExistWhenNotUpdateExistingLockConsistentDataWithSortKey_LockDoesNotExist() throws IOException,
+    public void testAcquireLockMustExistWhenNotUpdateExistingLockConsistentDataWithSortKey_LockDoesNotExist() throws
             LockNotGrantedException, InterruptedException {
 
         try {
@@ -610,7 +610,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockMustExistWhenUpdateExistingLock_LockDoesNotExist() throws IOException, LockNotGrantedException,
+    public void testAcquireLockMustExistWhenUpdateExistingLock_LockDoesNotExist() throws LockNotGrantedException,
             InterruptedException {
 
         try {
@@ -622,7 +622,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockMustExistWhenUpdateExistingLockConsistentData_LockDoesNotExist() throws IOException, LockNotGrantedException,
+    public void testAcquireLockMustExistWhenUpdateExistingLockConsistentData_LockDoesNotExist() throws LockNotGrantedException,
             InterruptedException {
 
         try {
@@ -959,7 +959,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testAcquireLockLeaveOrReplaceDataFromReleasedLock() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testAcquireLockLeaveOrReplaceDataFromReleasedLock() throws LockNotGrantedException, InterruptedException {
 
         LockItem item = this.lockClient.acquireLock(AcquireLockOptions.builder("testKey1").build());
 
@@ -1004,7 +1004,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     @Test
     public void testSendHeatbeatWithRangeKey() throws IOException, LockNotGrantedException, InterruptedException {
 
-        final String data = new String("testSendHeartbeatLeaveData" + SECURE_RANDOM.nextDouble());
+        final String data = "testSendHeartbeatLeaveData" + SECURE_RANDOM.nextDouble();
 
         final AmazonDynamoDBLockClient lockClient = new AmazonDynamoDBLockClient(
             AmazonDynamoDBLockClientOptions.builder(this.dynamoDBMock, RANGE_KEY_TABLE_NAME)
@@ -1026,9 +1026,9 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testSendHeartbeatLeaveData() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testSendHeartbeatLeaveData() throws LockNotGrantedException, InterruptedException {
 
-        final String data = new String("testSendHeartbeatLeaveData" + SECURE_RANDOM.nextDouble());
+        final String data = "testSendHeartbeatLeaveData" + SECURE_RANDOM.nextDouble();
 
         final LockItem item = this.lockClient
             .acquireLock(AcquireLockOptions.builder("testKey1").withData(ByteBuffer.wrap(data.getBytes()))
@@ -1043,10 +1043,10 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testSendHeartbeatChangeData() throws IOException, LockNotGrantedException, InterruptedException {
+    public void testSendHeartbeatChangeData() throws LockNotGrantedException, InterruptedException {
 
-        final String data1 = new String("testSendHeartbeatChangeData1" + SECURE_RANDOM.nextDouble());
-        final String data2 = new String("testSendHeartbeatChangeData2" + SECURE_RANDOM.nextDouble());
+        final String data1 = "testSendHeartbeatChangeData1" + SECURE_RANDOM.nextDouble();
+        final String data2 = "testSendHeartbeatChangeData2" + SECURE_RANDOM.nextDouble();
 
         final LockItem item = this.lockClient
             .acquireLock(AcquireLockOptions.builder("testKey1").withData(ByteBuffer.wrap(data1.getBytes()))
@@ -1235,7 +1235,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void canReleaseExpiredLock() throws LockNotGrantedException, InterruptedException, IOException {
+    public void canReleaseExpiredLock() throws LockNotGrantedException, InterruptedException {
         final LockItem item = this.lockClient.acquireLock(ACQUIRE_LOCK_OPTIONS_TEST_KEY_1);
         assertEquals(item.getPartitionKey(), "testKey1");
 
@@ -1326,7 +1326,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testGetLock() throws LockNotGrantedException, InterruptedException, IOException {
+    public void testGetLock() throws LockNotGrantedException, InterruptedException {
         this.lockClient.acquireLock(ACQUIRE_LOCK_OPTIONS_TEST_KEY_1);
         assertNotEquals(Optional.empty(), this.lockClient.getLock("testKey1", Optional.empty()));
         this.lockClient.getLock("testKey1", Optional.empty()).get().close();
@@ -1432,7 +1432,7 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
 
     @Test
     public void testAdditionalAttributes() throws LockNotGrantedException, InterruptedException, IOException {
-        final Map<String, AttributeValue> additionalAttributes = new HashMap<String, AttributeValue>();
+        final Map<String, AttributeValue> additionalAttributes = new HashMap<>();
         additionalAttributes.put(TABLE_NAME, AttributeValue.builder().s("ok").build());
         LockItem item = this.lockClient.acquireLock(AcquireLockOptions.builder("testKey1")
                 .withData(ByteBuffer.wrap(TEST_DATA.getBytes()))
@@ -1491,14 +1491,14 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
     }
 
     @Test
-    public void testLockItemHasSessionMonitor() throws InterruptedException, IOException {
+    public void testLockItemHasSessionMonitor() throws InterruptedException {
         final LockItem item = this.getShortLeaseLockWithSessionMonitor(30L, null);
         assertTrue(item.hasSessionMonitor());
         item.close();
     }
 
     @Test
-    public void testLockItemDoesNotHaveSessionMonitor() throws InterruptedException, IOException {
+    public void testLockItemDoesNotHaveSessionMonitor() throws InterruptedException {
         final LockItem item = this.getShortLeaseLock();
         assertFalse(item.hasSessionMonitor());
         item.close();
@@ -1526,25 +1526,19 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
 
     @Test(expected = SessionMonitorNotSetException.class)
     public void testFiringCallbackWithoutSessionMonitor() throws InterruptedException {
-        final LockItem item = this.getShortLeaseLock();
-        try {
+        try(final LockItem item = this.getShortLeaseLock()) {
             // we haven't called setSessionMonitor
             // try running the callback anyway
             item.runSessionMonitor();
-        } finally {
-            item.close();
         }
     }
 
     @Test(expected = SessionMonitorNotSetException.class)
     public void testAboutToExpireWithoutSessionMonitor() throws InterruptedException {
-        final LockItem item = this.getShortLeaseLock();
-        try {
+        try(final LockItem item = this.getShortLeaseLock()) {
             // we haven't called setSessionMonitor
             // try asking if about to expire anyway
             item.amIAboutToExpire();
-        } finally {
-            item.close();
         }
     }
 
@@ -1727,22 +1721,20 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
                                         final long heartbeatFrequencyMillis, final long safeTimeWithoutHeartbeatMillis)
         throws InterruptedException, IOException {
 
-        // Set up a client with proper lease duration and heartbeat frequency
-        // (no heartbeating thread)
-        final AmazonDynamoDBLockClient dbClient = new AmazonDynamoDBLockClient(
-            AmazonDynamoDBLockClientOptions.builder(this.dynamoDBMock, TABLE_NAME)
-                    .withOwnerName(INTEGRATION_TESTER)
-                    .withLeaseDuration(leaseDurationMillis)
-                    .withHeartbeatPeriod(heartbeatFrequencyMillis)
-                    .withTimeUnit(TimeUnit.MILLISECONDS)
-                    .withCreateHeartbeatBackgroundThread(false)
-                    .build());
-
         // heartbeatCount will measure how many heartbeats we actually get (and
         // serve as a synchronization point)
         final AtomicInteger heartbeatCount = new AtomicInteger();
 
-        try {
+        // Set up a client with proper lease duration and heartbeat frequency
+        // (no heartbeating thread)
+        try(final AmazonDynamoDBLockClient dbClient = new AmazonDynamoDBLockClient(
+                AmazonDynamoDBLockClientOptions.builder(this.dynamoDBMock, TABLE_NAME)
+                        .withOwnerName(INTEGRATION_TESTER)
+                        .withLeaseDuration(leaseDurationMillis)
+                        .withHeartbeatPeriod(heartbeatFrequencyMillis)
+                        .withTimeUnit(TimeUnit.MILLISECONDS)
+                        .withCreateHeartbeatBackgroundThread(false)
+                        .build())) {
             // Acquire the lock, set a session monitor to call
             // heartbeatCount.notify() when the lock's lease goes into the
             // danger zone.
@@ -1763,8 +1755,6 @@ public class BasicLockClientTests extends InMemoryLockClientTester {
             // We should have heartbeated the proper number of times.
             assertEquals(nHeartbeats, heartbeatCount.get());
 
-        } finally {
-            dbClient.close();
         }
     }
 

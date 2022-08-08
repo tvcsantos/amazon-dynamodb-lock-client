@@ -15,7 +15,7 @@
 package com.amazonaws.services.dynamodbv2;
 
 import com.amazonaws.services.dynamodbv2.model.LockNotGrantedException;
-import java.io.IOException;
+
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collections;

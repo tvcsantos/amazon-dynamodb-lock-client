@@ -59,7 +59,7 @@ public class AcquireLockOptions {
      * the lock.
      */
     public static class AcquireLockOptionsBuilder {
-        private String partitionKey;
+        private final String partitionKey;
         private Optional<String> sortKey;
         private Optional<ByteBuffer> data;
         private Boolean replaceData;
@@ -441,7 +441,7 @@ public class AcquireLockOptions {
 
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof AcquireLockOptions)) {
+        if (!(other instanceof AcquireLockOptions)) {
             return false;
         }
 

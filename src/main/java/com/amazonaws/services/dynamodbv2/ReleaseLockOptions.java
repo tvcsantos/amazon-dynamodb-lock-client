@@ -37,7 +37,7 @@ public class ReleaseLockOptions {
     }
 
     public static class ReleaseLockOptionsBuilder {
-        private LockItem lockItem;
+        private final LockItem lockItem;
         private boolean deleteLock;
         private boolean bestEffort;
         private Optional<ByteBuffer> data;
@@ -95,7 +95,7 @@ public class ReleaseLockOptions {
         }
 
         @Override
-        public java.lang.String toString() {
+        public String toString() {
             return "ReleaseLockOptions.ReleaseLockOptionsBuilder(lockItem=" + this.lockItem + ", deleteLock=" + this.deleteLock + ", bestEffort=" + this.bestEffort + ", data="
                 + this.data + ")";
         }

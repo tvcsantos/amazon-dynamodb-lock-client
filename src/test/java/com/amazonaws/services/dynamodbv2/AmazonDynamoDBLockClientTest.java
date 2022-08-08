@@ -18,9 +18,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
@@ -49,8 +47,6 @@ import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBLockClient
         .PK_EXISTS_AND_RVN_IS_THE_SAME_AND_IS_RELEASED_CONDITION;
 import static com.amazonaws.services.dynamodbv2.AmazonDynamoDBLockClient.RVN_VALUE_EXPRESSION_VARIABLE;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import com.amazonaws.services.dynamodbv2.model.LockNotGrantedException;
@@ -514,7 +510,7 @@ public class AmazonDynamoDBLockClientTest {
         try (MockedStatic<UUID> ignored = setOwnerNameToUuid(uuid)) {
             try (MockedStatic<InetAddress> ignored1 = mockInet4Address()) {
                 AmazonDynamoDBLockClient client = getLockClient();
-                long lastUpdatedTimeInMilliseconds = 2l;
+                long lastUpdatedTimeInMilliseconds = 2L;
                 LockItem item = new LockItem(client, "a", Optional.empty(), Optional.of(ByteBuffer.wrap("data".getBytes())),
                         false, uuid.toString(), 1L, lastUpdatedTimeInMilliseconds,
                         "rvn", false, Optional.empty(), null);
